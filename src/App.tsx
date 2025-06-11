@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/reactComponents/navigation/Navigation";
+import { Navbar } from "@/reactComponents/navigation/Navigation";
 import { Routes, Route } from "react-router";
 import { publicRoute } from "@/routes/routes";
 

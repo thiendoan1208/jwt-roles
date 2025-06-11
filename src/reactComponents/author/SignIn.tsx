@@ -9,9 +9,19 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useEffect } from "react";
 import { Link } from "react-router";
+import axios from "axios";
 
 export default function SignIn() {
+  useEffect(() => {
+    const test = async () => {
+      const data = await axios.get("http://localhost:8080/api/test-api");
+      console.log(data);
+    };
+    test();
+  }, []);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 h-screen -mt-[70px]">
       <div className="md:col-span-1 flex  items-center justify-end md:justify-center flex-col -mb-10 md:mb-0">

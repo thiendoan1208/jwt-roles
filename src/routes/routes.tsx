@@ -1,5 +1,5 @@
-import SignIn from "@/components/reactComponents/author/SignIn";
-import SignUp from "@/components/reactComponents/author/SignUp";
+import SignIn from "@/reactComponents/author/SignIn";
+import SignUp from "@/reactComponents/author/SignUp";
 
 const publicRoute = [
   { path: "/sign-in", component: <SignIn /> },
