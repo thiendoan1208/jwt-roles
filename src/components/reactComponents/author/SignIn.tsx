@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router";
 
 export default function SignIn() {
   return (
@@ -37,6 +38,7 @@ export default function SignIn() {
                     type="email"
                     placeholder="m@example.com"
                     required
+                    autoComplete="true"
                   />
                 </div>
                 <div className="grid gap-2">
@@ -49,7 +51,13 @@ export default function SignIn() {
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    required
+                    autoComplete=""
+                  />
                 </div>
               </div>
             </form>
@@ -59,7 +67,7 @@ export default function SignIn() {
               Login
             </Button>
             <Button variant="outline" className="w-full">
-              <a href="/sign-up">Sign up</a>
+              <Link to="/sign-up">Sign up</Link>
             </Button>
           </CardFooter>
         </Card>
