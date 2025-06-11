@@ -1,11 +1,19 @@
 import { Navbar } from "@/components/reactComponents/navigation/Navigation";
+import { Routes, Route } from "react-router";
+import { publicRoute } from "@/routes/routes";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <div className="h-[1000px]">
-        <h1 className="text-red-700 text-2xl">Xin chao cac ban</h1>
+      <div className="flex flex-col items-center">
+        <div className="container">
+          <Routes>
+            {publicRoute.map((route) => (
+              <Route path={route.path} element={route.component} />
+            ))}
+          </Routes>
+        </div>
       </div>
     </div>
   );
