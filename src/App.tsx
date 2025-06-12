@@ -1,6 +1,7 @@
 import { Navbar } from "@/reactComponents/navigation/Navigation";
 import { Routes, Route } from "react-router";
 import { publicRoute } from "@/routes/routes";
+import { Toaster } from "sonner";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           </Routes>
         </div>
       </div>
+      <Toaster position="bottom-right" richColors />
     </div>
   );
 }

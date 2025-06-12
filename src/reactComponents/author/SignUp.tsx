@@ -9,9 +9,83 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useState } from "react";
 import { Link } from "react-router";
+import { toast } from "sonner";
+
+type SignUpForm = {
+  email: string;
+  username: string;
+  sex: string;
+  address: string;
+  phone: string;
+  password: string;
+  "re-password": string;
+};
 
 export default function SignUp() {
+  const [signUpForm, setSignupForm] = useState<SignUpForm>({
+    email: "",
+    username: "",
+    sex: "",
+    address: "",
+    phone: "",
+    password: "",
+    "re-password": "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSignupForm({
+      ...signUpForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const isValidateForm = () => {
+    for (const [key, value] of Object.entries(signUpForm)) {
+      if (key && !value) {
+        toast.error(`No ${key} is provided`);
+        return false;
+      }
+    }
+
+    const regexEmail = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/;
+    if (!regexEmail.test(signUpForm.email)) {
+      toast.error("Invalid email");
+      return false;
+    }
+
+    if (signUpForm.username.length > 16) {
+      toast.error("Username has to be less than 16 letter");
+      return false;
+    }
+
+    if (signUpForm.sex !== "Male" && signUpForm.sex !== "Female") {
+      toast.error("Please provide a correct Gender");
+      return false;
+    }
+
+    if (signUpForm.password.length > 16) {
+      toast.error("Password has to be less than 16 letter");
+      return false;
+    }
+
+    if (signUpForm.password !== signUpForm["re-password"]) {
+      toast.error("Password is not match");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleSubmitSignUpForm = () => {
+    const check = isValidateForm();
+    if (check) {
+      toast.success("Creating your account successfully. Redirecting...");
+    }
+    console.log(signUpForm);
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 h-screen -mt-[70px]">
       <div className="md:col-span-1 flex  items-center justify-end md:justify-center flex-col mt-12 md:mt-0">
@@ -40,6 +114,8 @@ export default function SignUp() {
                     placeholder="m@example.com"
                     required
                     autoComplete="true"
+                    value={signUpForm.email}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -51,6 +127,8 @@ export default function SignUp() {
                     placeholder="ex: megumi1208"
                     required
                     autoComplete="true"
+                    value={signUpForm.username}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -62,6 +140,8 @@ export default function SignUp() {
                     placeholder="Male/Female"
                     required
                     autoComplete="true"
+                    value={signUpForm.sex}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -73,6 +153,8 @@ export default function SignUp() {
                     placeholder="Your address"
                     required
                     autoComplete="true"
+                    value={signUpForm.address}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -84,6 +166,8 @@ export default function SignUp() {
                     placeholder="Your phone number"
                     required
                     autoComplete="true"
+                    value={signUpForm.phone}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -97,6 +181,8 @@ export default function SignUp() {
                     placeholder="Password"
                     required
                     autoComplete="true"
+                    value={signUpForm.password}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -106,17 +192,25 @@ export default function SignUp() {
                   <Input
                     id="re-password"
                     type="password"
-                    placeholder="Password"
+                    placeholder="Re-enter password"
                     name="re-password"
                     required
                     autoComplete="true"
+                    value={signUpForm["re-password"]}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
             </form>
           </CardContent>
           <CardFooter className="flex-col gap-2">
-            <Button type="submit" className="w-full bg-blue-700">
+            <Button
+              onClick={() => {
+                handleSubmitSignUpForm();
+              }}
+              type="submit"
+              className="w-full bg-blue-700"
+            >
               Sign up
             </Button>
             <Button variant="outline" className="w-full">
