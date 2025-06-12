@@ -9,19 +9,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createNewUser } from "@/services/user";
+import type { SignUpForm } from "@/types/form";
+
 import { useState } from "react";
 import { Link } from "react-router";
 import { toast } from "sonner";
-
-type SignUpForm = {
-  email: string;
-  username: string;
-  sex: string;
-  address: string;
-  phone: string;
-  password: string;
-  "re-password": string;
-};
 
 export default function SignUp() {
   const [signUpForm, setSignupForm] = useState<SignUpForm>({
@@ -78,12 +71,20 @@ export default function SignUp() {
     return true;
   };
 
-  const handleSubmitSignUpForm = () => {
-    const check = isValidateForm();
-    if (check) {
-      toast.success("Creating your account successfully. Redirecting...");
+  const handleSubmitSignUpForm = async () => {
+    try {
+      const check = isValidateForm();
+      if (check) {
+        const data = await createNewUser(signUpForm);
+        if (data.data.EC == 1) {
+          toast.error(data.data.EM);
+        } else {
+          toast.success("Creating your account successfully. Redirecting...");
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
-    console.log(signUpForm);
   };
 
   return (
