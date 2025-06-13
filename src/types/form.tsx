@@ -8,4 +8,9 @@ type SignUpForm = {
   "re-password": string;
 };
 
-export type { SignUpForm };
+type SignInForm = {
+  email: string;
+  password: string;
+};
+
+export type { SignUpForm, SignInForm };

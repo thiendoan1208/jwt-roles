@@ -9,18 +9,48 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect } from "react";
+import { signInUser } from "@/services/user";
+import type { SignInForm } from "@/types/form";
+import { useState } from "react";
 import { Link } from "react-router";
-import axios from "axios";
+import { toast } from "sonner";
 
 export default function SignIn() {
-  useEffect(() => {
-    const test = async () => {
-      const data = await axios.get("http://localhost:8080/api/test-api");
-      console.log(data);
-    };
-    test();
-  }, []);
+  const [signInForm, setSignInForm] = useState<SignInForm>({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSignInForm({
+      ...signInForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmitSignInForm = async () => {
+    try {
+      if (!signInForm.email) {
+        toast.error("Please provide your email");
+        return;
+      }
+
+      if (!signInForm.password) {
+        toast.error("Please provide your password");
+        return;
+      }
+
+      const data = await signInUser(signInForm);
+      if (data.data.EC === 1 || data.data.EC === -1) {
+        toast.error(data.data.EM);
+      } else {
+        toast.success(data.data.EM);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something wrong, please try again later");
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 h-screen -mt-[70px]">
@@ -49,6 +79,9 @@ export default function SignIn() {
                     placeholder="m@example.com"
                     required
                     autoComplete="true"
+                    name="email"
+                    value={signInForm.email}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -67,13 +100,22 @@ export default function SignIn() {
                     placeholder="Password"
                     required
                     autoComplete=""
+                    name="password"
+                    value={signInForm.password}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
             </form>
           </CardContent>
           <CardFooter className="flex-col gap-2">
-            <Button type="submit" className="w-full bg-blue-700">
+            <Button
+              onClick={() => {
+                handleSubmitSignInForm();
+              }}
+              type="submit"
+              className="w-full bg-blue-700"
+            >
               Login
             </Button>
             <Button variant="outline" className="w-full">

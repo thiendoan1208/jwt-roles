@@ -1,8 +1,12 @@
 import axios from "@/services/axios-config";
-import type { SignUpForm } from "@/types/form";
+import type { SignInForm, SignUpForm } from "@/types/form";
 
-const createNewUser = async (signUpForm: SignUpForm) => {
+const createNewUser = (signUpForm: SignUpForm) => {
   return axios.post("/api/users/create-user", signUpForm);
 };
 
-export { createNewUser };
+const signInUser = (signInForm: SignInForm) => {
+  return axios.post("/api/users/sign-in", signInForm);
+};
+
+export { createNewUser, signInUser };

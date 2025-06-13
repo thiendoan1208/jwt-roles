@@ -13,10 +13,12 @@ import { createNewUser } from "@/services/user";
 import type { SignUpForm } from "@/types/form";
 
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const [signUpForm, setSignupForm] = useState<SignUpForm>({
     email: "",
     username: "",
@@ -76,14 +78,16 @@ export default function SignUp() {
       const check = isValidateForm();
       if (check) {
         const data = await createNewUser(signUpForm);
-        if (data.data.EC == 1) {
+        if (data.data.EC == 1 || data.data.EC == -1) {
           toast.error(data.data.EM);
         } else {
           toast.success("Creating your account successfully. Redirecting...");
+          navigate("/sign-in");
         }
       }
     } catch (error) {
       console.log(error);
+      toast.error("Something wrong, please try again later");
     }
   };
 
