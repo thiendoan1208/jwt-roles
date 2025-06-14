@@ -1,5 +1,3 @@
-"use client";
-
 import { MenuIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -31,17 +29,20 @@ const Navbar = () => {
             <NavigationMenu className="hidden lg:block">
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <Link to="/product" className={navigationMenuTriggerStyle()}>
-                    Products
+                  <Link to="/users" className={navigationMenuTriggerStyle()}>
+                    Users
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link to="#" className={navigationMenuTriggerStyle()}>
-                    Resources
+                  <Link to="/project" className={navigationMenuTriggerStyle()}>
+                    Project
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link to="#" className={navigationMenuTriggerStyle()}>
+                  <Link
+                    to="https://www.facebook.com/ddthien12"
+                    className={navigationMenuTriggerStyle()}
+                  >
                     Contact
                   </Link>
                 </NavigationMenuItem>
@@ -65,15 +66,18 @@ const Navbar = () => {
                 <SheetHeader className="my-2"></SheetHeader>
                 <div className="flex flex-col p-4">
                   <div className="flex flex-col gap-6">
-                    <a href="#" className="font-medium">
-                      Templates
-                    </a>
-                    <a href="#" className="font-medium">
-                      Blog
-                    </a>
-                    <a href="#" className="font-medium">
-                      Pricing
-                    </a>
+                    <Link to="/users" className="font-medium">
+                      Users
+                    </Link>
+                    <Link to="/project" className="font-medium">
+                      Project
+                    </Link>
+                    <Link
+                      to="https://www.facebook.com/ddthien12"
+                      className="font-medium"
+                    >
+                      Contact
+                    </Link>
                   </div>
                   <div className="mt-6 flex flex-col gap-4">
                     <Button variant="outline">

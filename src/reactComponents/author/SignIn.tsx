@@ -11,11 +11,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInUser } from "@/services/user";
 import type { SignInForm } from "@/types/form";
-import { useState } from "react";
-import { Link } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function SignIn() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const data = sessionStorage.getItem("user");
+    if (data) {
+      const parseData = JSON.parse(data);
+      if (parseData && parseData.isAuthenticate) {
+        navigate("/users");
+      }
+    }
+  }, [navigate]);
+
   const [signInForm, setSignInForm] = useState<SignInForm>({
     email: "",
     password: "",
@@ -26,6 +38,15 @@ export default function SignIn() {
       ...signInForm,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSessionsStorage = () => {
+    const data = {
+      isAuthenticate: true,
+      token: "fake-token",
+    };
+
+    sessionStorage.setItem("user", JSON.stringify(data));
   };
 
   const handleSubmitSignInForm = async () => {
@@ -45,6 +66,8 @@ export default function SignIn() {
         toast.error(data.data.EM);
       } else {
         toast.success(data.data.EM);
+        navigate("/users");
+        handleSessionsStorage();
       }
     } catch (error) {
       console.log(error);
@@ -99,7 +122,7 @@ export default function SignIn() {
                     type="password"
                     placeholder="Password"
                     required
-                    autoComplete=""
+                    autoComplete="true"
                     name="password"
                     value={signInForm.password}
                     onChange={handleChange}

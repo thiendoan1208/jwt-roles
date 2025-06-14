@@ -12,12 +12,22 @@ import { Label } from "@/components/ui/label";
 import { createNewUser } from "@/services/user";
 import type { SignUpForm } from "@/types/form";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function SignUp() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const data = sessionStorage.getItem("user");
+    if (data) {
+      const parseData = JSON.parse(data);
+      if (parseData && parseData.isAuthenticate) {
+        navigate("/users");
+      }
+    }
+  }, [navigate]);
 
   const [signUpForm, setSignupForm] = useState<SignUpForm>({
     email: "",
