@@ -13,9 +13,32 @@ import {
   SheetHeader,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState({
+    isAuthenticate: false,
+    token: "",
+  });
+
+  useEffect(() => {
+    const data = sessionStorage.getItem("user");
+    if (data) {
+      const parseData = JSON.parse(data);
+      if (parseData && parseData.isAuthenticate) {
+        setUser(parseData);
+      }
+    }
+  }, []);
+
+  const handleSignout = () => {
+    sessionStorage.removeItem("user");
+    user.isAuthenticate = false;
+    navigate("/sign-in");
+  };
+
   return (
     <div className="sticky z-[100] inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-xs transition-all">
       <section className="py-4 sm:flex sm:items-center sm:justify-around sm:mx-10 lg:block">
@@ -48,14 +71,26 @@ const Navbar = () => {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-            <div className="hidden items-center gap-4 lg:flex">
-              <Button variant="outline">
-                <Link to="/sign-in">Sign in</Link>
-              </Button>
-              <Button>
-                <Link to="/sign-up">Sign up</Link>
-              </Button>
-            </div>
+            {user.isAuthenticate === false ? (
+              <div className="hidden items-center gap-4 lg:flex">
+                <Button variant="outline">
+                  <Link to="/sign-in">Sign in</Link>
+                </Button>
+                <Button>
+                  <Link to="/sign-up">Sign up</Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="hidden items-center gap-4 lg:flex">
+                <Button
+                  onClick={() => {
+                    handleSignout();
+                  }}
+                >
+                  Sign out
+                </Button>
+              </div>
+            )}
             <Sheet>
               <SheetTrigger asChild className="lg:hidden">
                 <Button variant="outline" size="icon">
@@ -79,14 +114,26 @@ const Navbar = () => {
                       Contact
                     </Link>
                   </div>
-                  <div className="mt-6 flex flex-col gap-4">
-                    <Button variant="outline">
-                      <Link to="/sign-in">Sign in</Link>
-                    </Button>
-                    <Button>
-                      <Link to="/sign-up">Sign up</Link>
-                    </Button>
-                  </div>
+                  {user.isAuthenticate === false ? (
+                    <div className="mt-6 flex flex-col gap-4">
+                      <Button variant="outline">
+                        <Link to="/sign-in">Sign in</Link>
+                      </Button>
+                      <Button>
+                        <Link to="/sign-up">Sign up</Link>
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="mt-6 flex flex-col gap-4">
+                      <Button
+                        onClick={() => {
+                          handleSignout();
+                        }}
+                      >
+                        Sign out
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>

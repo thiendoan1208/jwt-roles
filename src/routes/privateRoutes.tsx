@@ -25,28 +25,30 @@ function PrivateRoutes({ element }: { element: ReactElement }) {
       {user && user.isAuthenticate === true ? (
         <div>{element}</div>
       ) : (
-        <Alert variant="destructive">
-          <AlertCircleIcon />
-          <AlertTitle>Unable to access this page.</AlertTitle>
-          <AlertDescription>
-            <p>Please Login/Sign up first and try again.</p>
-            <ul className="list-inside list-disc text-sm">
-              <li>Check your personal detail</li>
-              <li>Verifying information</li>
-              <div className="flex gap-1.5 mt-2">
-                <Button className="w-full bg-black">
-                  <Link to="/sign-in">Sign in</Link>
-                </Button>
+        <div className="flex  justify-center">
+          <Alert variant="destructive" className="mx-20 lg:w-1/2 mt-10">
+            <AlertCircleIcon />
+            <AlertTitle>Unable to access this page.</AlertTitle>
+            <AlertDescription>
+              <p>Please Login/Sign up first and try again.</p>
+              <ul className="list-inside list-disc text-sm">
+                <li>Check your personal detail</li>
+                <li>Verifying information</li>
+                <div className="block sm:flex gap-1.5 mt-2">
+                  <Button className="w-full my-2 bg-black">
+                    <Link to="/sign-in">Sign in</Link>
+                  </Button>
 
-                <Button variant="outline" className="w-full">
-                  <Link to="/sign-up" className="text-black">
-                    Sign up
-                  </Link>
-                </Button>
-              </div>
-            </ul>
-          </AlertDescription>
-        </Alert>
+                  <Button variant="outline" className="w-full my-2">
+                    <Link to="/sign-up" className="text-black">
+                      Sign up
+                    </Link>
+                  </Button>
+                </div>
+              </ul>
+            </AlertDescription>
+          </Alert>
+        </div>
       )}
     </div>
   );

@@ -68,6 +68,7 @@ export default function SignIn() {
         toast.success(data.data.EM);
         navigate("/users");
         handleSessionsStorage();
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);
