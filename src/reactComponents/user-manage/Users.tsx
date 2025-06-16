@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import DeleteUserDialog from "@/reactComponents/Dialog/DeleteUser";
 import { getAllUsers } from "@/services/user";
 import type { User } from "@/types/user-list";
 import { useEffect, useState } from "react";
@@ -27,24 +28,25 @@ function Users() {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    const getUserList = async () => {
-      try {
-        const data = await getAllUsers(currentPage, PAGE_LIMIT, signal);
-        if (data && data.data.EC === 0) {
-          setUserList(data.data.DT.rows);
-
-          setTotalPage(Math.ceil(data.data.DT.totalPages));
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getUserList();
+    getUserList(signal);
     return () => {
       controller.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
+
+  const getUserList = async (signal: AbortSignal) => {
+    try {
+      const data = await getAllUsers(currentPage, PAGE_LIMIT, signal);
+      if (data && data.data.EC === 0) {
+        setUserList(data.data.DT.rows);
+
+        setTotalPage(Math.ceil(data.data.DT.totalPages));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handlePageClick = (event: selectedItem) => {
     setCurrentPage(event.selected + 1);
@@ -66,7 +68,8 @@ function Users() {
             <TableHead className="w-[100px]">UserID</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Username</TableHead>
-            <TableHead className="">Group</TableHead>
+            <TableHead>Group</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -79,6 +82,16 @@ function Users() {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.username}</TableCell>
                 <TableCell className="">{user.Group?.name ?? "N/A"}</TableCell>
+                <TableCell className="">
+                  <div>
+                    <DeleteUserDialog
+                      id={user.id}
+                      email={user.email}
+                      username={user.username}
+                      userListFunc={getUserList}
+                    />
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

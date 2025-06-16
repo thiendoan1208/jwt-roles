@@ -20,4 +20,8 @@ const getAllUsers = (
   });
 };
 
-export { createNewUser, signInUser, getAllUsers };
+const deleteUser = (id: number): Promise<AxiosResponse> => {
+  return axios.delete("/api/user/delete", { params: { id: id } });
+};
+
+export { createNewUser, signInUser, getAllUsers, deleteUser };
