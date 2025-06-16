@@ -10,8 +10,14 @@ const signInUser = (signInForm: SignInForm) => {
   return axios.post("/api/users/sign-in", signInForm);
 };
 
-const getAllUsers = (signal: AbortSignal): Promise<AxiosResponse> => {
-  return axios.get("/api/user/list", { signal });
+const getAllUsers = (
+  currentPage: number,
+  PAGE_LIMIT: number,
+  signal: AbortSignal
+): Promise<AxiosResponse> => {
+  return axios.get(`/api/user/list?page=${currentPage}&limit=${PAGE_LIMIT}`, {
+    signal,
+  });
 };
 
 export { createNewUser, signInUser, getAllUsers };
