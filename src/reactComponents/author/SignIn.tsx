@@ -17,6 +17,10 @@ import { toast } from "sonner";
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const [signInForm, setSignInForm] = useState<SignInForm>({
+    email: "",
+    password: "",
+  });
 
   useEffect(() => {
     const data = sessionStorage.getItem("user");
@@ -27,11 +31,6 @@ export default function SignIn() {
       }
     }
   }, [navigate]);
-
-  const [signInForm, setSignInForm] = useState<SignInForm>({
-    email: "",
-    password: "",
-  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignInForm({

@@ -13,4 +13,14 @@ type SignInForm = {
   password: string;
 };
 
-export type { SignUpForm, SignInForm };
+type CreateUserForm = {
+  email: string;
+  username: string;
+  sex: string;
+  address: string;
+  phone: string;
+  password: string;
+  groupID: number;
+};
+
+export type { SignUpForm, SignInForm, CreateUserForm };

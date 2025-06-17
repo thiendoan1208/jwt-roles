@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createNewUser } from "@/services/user";
+import { signUpUser } from "@/services/user";
 import type { SignUpForm } from "@/types/form";
 
 import { useEffect, useState } from "react";
@@ -18,6 +18,15 @@ import { toast } from "sonner";
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const [signUpForm, setSignupForm] = useState<SignUpForm>({
+    email: "",
+    username: "",
+    sex: "",
+    address: "",
+    phone: "",
+    password: "",
+    "re-password": "",
+  });
 
   useEffect(() => {
     const data = sessionStorage.getItem("user");
@@ -28,16 +37,6 @@ export default function SignUp() {
       }
     }
   }, [navigate]);
-
-  const [signUpForm, setSignupForm] = useState<SignUpForm>({
-    email: "",
-    username: "",
-    sex: "",
-    address: "",
-    phone: "",
-    password: "",
-    "re-password": "",
-  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSignupForm({
@@ -87,7 +86,7 @@ export default function SignUp() {
     try {
       const check = isValidateForm();
       if (check) {
-        const data = await createNewUser(signUpForm);
+        const data = await signUpUser(signUpForm);
         if (data.data.EC == 1 || data.data.EC == -1) {
           toast.error(data.data.EM);
         } else {

@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import DeleteUserDialog from "@/reactComponents/Dialog/DeleteUser";
+import ModifyUser from "@/reactComponents/Dialog/ModifyUser";
 import { getAllUsers } from "@/services/user";
 import type { User } from "@/types/user-list";
 import { useEffect, useState } from "react";
@@ -37,10 +38,10 @@ function Users() {
 
   const getUserList = async (signal: AbortSignal) => {
     try {
+      console.log("calling..");
       const data = await getAllUsers(currentPage, PAGE_LIMIT, signal);
       if (data && data.data.EC === 0) {
         setUserList(data.data.DT.rows);
-
         setTotalPage(Math.ceil(data.data.DT.totalPages));
       }
     } catch (error) {
@@ -54,11 +55,16 @@ function Users() {
 
   return (
     <div className="mx-5">
-      <div>
+      <div className="flex justify-between items-center">
         <h1 className="font-semibold text-2xl my-2 text-red-400">
-          <p>Here is a list of your users </p>
-          {`Page: ${currentPage}`}
+          <div className="">
+            <p>Here is a list of your users </p>
+            <p>{`Page: ${currentPage}`}</p>
+          </div>
         </h1>
+        <div>
+          <ModifyUser userListFunc={getUserList} />
+        </div>
       </div>
       <Table>
         <TableCaption></TableCaption>
@@ -77,7 +83,9 @@ function Users() {
             userList.length > 0 &&
             userList.map((user, index) => (
               <TableRow key={`user-${index}`}>
-                <TableCell className="font-medium">{index + 1}</TableCell>
+                <TableCell className="font-medium">
+                  {Math.floor(index + 1 + PAGE_LIMIT * (currentPage - 1))}
+                </TableCell>
                 <TableCell className="font-medium">{user.id}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.username}</TableCell>
