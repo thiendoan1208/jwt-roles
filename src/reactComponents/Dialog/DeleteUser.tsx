@@ -42,7 +42,9 @@ function DeleteUserDialog({
       <Dialog>
         <div>
           <DialogTrigger asChild>
-            <Button variant="outline">Delete</Button>
+            <Button variant="outline" className="text-red-500">
+              Delete
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] z-[500]">
             <DialogHeader>

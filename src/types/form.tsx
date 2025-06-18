@@ -23,4 +23,13 @@ type CreateUserForm = {
   groupID: number;
 };
 
-export type { SignUpForm, SignInForm, CreateUserForm };
+type UpdateUserForm = {
+  email: string;
+  username: string;
+  sex: string;
+  address: string;
+  phone: string;
+  groupID: number;
+};
+
+export type { SignUpForm, SignInForm, CreateUserForm, UpdateUserForm };

@@ -1,5 +1,10 @@
 import axios from "@/services/axios-config";
-import type { CreateUserForm, SignInForm, SignUpForm } from "@/types/form";
+import type {
+  CreateUserForm,
+  SignInForm,
+  SignUpForm,
+  UpdateUserForm,
+} from "@/types/form";
 import type { AxiosResponse } from "axios";
 
 const signUpUser = (signUpForm: SignUpForm) => {
@@ -26,8 +31,19 @@ const createNewUser = (user: CreateUserForm): Promise<AxiosResponse> => {
   return axios.post("/api/user/create", user);
 };
 
+const updateUser = (user: UpdateUserForm): Promise<AxiosResponse> => {
+  return axios.put("/api/user/update", user);
+};
+
 const deleteUser = (id: number): Promise<AxiosResponse> => {
   return axios.delete("/api/user/delete", { params: { id: id } });
 };
 
-export { signUpUser, signInUser, getAllUsers, deleteUser, createNewUser };
+export {
+  signUpUser,
+  signInUser,
+  getAllUsers,
+  deleteUser,
+  createNewUser,
+  updateUser,
+};

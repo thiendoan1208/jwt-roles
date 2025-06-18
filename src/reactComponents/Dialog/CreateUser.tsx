@@ -29,7 +29,7 @@ import { createNewUser } from "@/services/user";
 
 import { toast } from "sonner";
 
-function ModifyUser({
+function CreateUser({
   userListFunc,
 }: {
   userListFunc: (signal: AbortSignal) => Promise<void>;
@@ -91,6 +91,7 @@ function ModifyUser({
         userListFunc(controller.signal);
       }
     } catch (error) {
+      toast.error("Cannot create user");
       console.log(error);
     }
   };
@@ -227,4 +228,4 @@ function ModifyUser({
   );
 }
 
-export default ModifyUser;
+export default CreateUser;

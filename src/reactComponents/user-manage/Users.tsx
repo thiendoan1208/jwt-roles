@@ -8,11 +8,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import DeleteUserDialog from "@/reactComponents/Dialog/DeleteUser";
-import ModifyUser from "@/reactComponents/Dialog/ModifyUser";
+import CreateUser from "@/reactComponents/Dialog/CreateUser";
 import { getAllUsers } from "@/services/user";
-import type { User } from "@/types/user-list";
+import type { UpdateUserType } from "@/types/user-list";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
+import UpdateUser from "@/reactComponents/Dialog/UpdateUser";
 
 type selectedItem = {
   selected: number;
@@ -21,7 +22,7 @@ type selectedItem = {
 const PAGE_LIMIT = 5;
 
 function Users() {
-  const [userList, setUserList] = useState<User[]>([]);
+  const [userList, setUserList] = useState<UpdateUserType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPage, setTotalPage] = useState<number>(1);
 
@@ -38,7 +39,6 @@ function Users() {
 
   const getUserList = async (signal: AbortSignal) => {
     try {
-      console.log("calling..");
       const data = await getAllUsers(currentPage, PAGE_LIMIT, signal);
       if (data && data.data.EC === 0) {
         setUserList(data.data.DT.rows);
@@ -63,7 +63,7 @@ function Users() {
           </div>
         </h1>
         <div>
-          <ModifyUser userListFunc={getUserList} />
+          <CreateUser userListFunc={getUserList} />
         </div>
       </div>
       <Table>
@@ -91,13 +91,18 @@ function Users() {
                 <TableCell>{user.username}</TableCell>
                 <TableCell className="">{user.Group?.name ?? "N/A"}</TableCell>
                 <TableCell className="">
-                  <div>
-                    <DeleteUserDialog
-                      id={user.id}
-                      email={user.email}
-                      username={user.username}
-                      userListFunc={getUserList}
-                    />
+                  <div className="flex space-x-1">
+                    <div>
+                      <UpdateUser user={user} userListFunc={getUserList} />
+                    </div>
+                    <div>
+                      <DeleteUserDialog
+                        id={user.id}
+                        email={user.email}
+                        username={user.username}
+                        userListFunc={getUserList}
+                      />
+                    </div>
                   </div>
                 </TableCell>
               </TableRow>
