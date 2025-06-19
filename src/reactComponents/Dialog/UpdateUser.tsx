@@ -24,7 +24,7 @@ import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 import { getAllGroup } from "@/services/group";
 import type { Group } from "@/types/group";
-import type { CreateUserForm } from "@/types/form";
+import type { UpdateUserForm } from "@/types/form";
 import { updateUser } from "@/services/user";
 
 import { toast } from "sonner";
@@ -38,7 +38,7 @@ function UpdateUser({
   userListFunc: (signal: AbortSignal) => Promise<void>;
 }) {
   const [groups, setGroups] = useState<Group[]>([]);
-  const [createUserForm, setCreateUserForm] = useState<CreateUserForm>(user);
+  const [createUserForm, setCreateUserForm] = useState<UpdateUserForm>(user);
 
   useEffect(() => {
     const getGroups = async () => {
@@ -146,7 +146,6 @@ function UpdateUser({
                   id="password"
                   name="password"
                   placeholder=""
-                  value={createUserForm.password}
                   onChange={handleChange}
                 />
               </div>
