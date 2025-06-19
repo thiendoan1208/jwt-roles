@@ -4,6 +4,8 @@ const instance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_URL,
 });
 
+instance.defaults.withCredentials = true;
+
 // Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
