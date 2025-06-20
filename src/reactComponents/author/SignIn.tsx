@@ -9,13 +9,16 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { UserContext } from "@/Context/UserContext";
 import { signInUser } from "@/services/user";
 import type { SignInForm } from "@/types/form";
-import { useEffect, useState } from "react";
+import type { Roles, UserLogin } from "@/types/user";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function SignIn() {
+  const { loginContext } = useContext(UserContext);
   const navigate = useNavigate();
   const [signInForm, setSignInForm] = useState<SignInForm>({
     email: "",
@@ -39,12 +42,21 @@ export default function SignIn() {
     });
   };
 
-  const handleSessionsStorage = () => {
-    const data = {
+  const handleSessionsStorage = (userData: {
+    data: { email: string; username: string; roles: []; access_token: string };
+  }) => {
+    const email = userData.data.email;
+    const username = userData.data.username;
+    const roles: Roles[] = userData.data.roles;
+
+    const data: UserLogin = {
       isAuthenticate: true,
-      token: "fake-token",
+      token: userData.data.access_token,
+      account: { email, username, roles },
     };
 
+    console.log(data);
+    loginContext(data);
     sessionStorage.setItem("user", JSON.stringify(data));
   };
 
@@ -61,12 +73,13 @@ export default function SignIn() {
       }
 
       const data = await signInUser(signInForm);
+
       if (data.data.EC === 1 || data.data.EC === -1) {
         toast.error(data.data.EM);
       } else {
         toast.success(data.data.EM);
         navigate("/users");
-        handleSessionsStorage();
+        handleSessionsStorage(data.data);
         window.location.reload();
       }
     } catch (error) {
