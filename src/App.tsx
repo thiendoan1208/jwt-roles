@@ -4,6 +4,7 @@ import { publicRoute } from "@/routes/appRoutes";
 import { Toaster } from "sonner";
 import PrivateRoutes from "@/routes/privateRoutes";
 
+
 function App() {
   return (
     <div>

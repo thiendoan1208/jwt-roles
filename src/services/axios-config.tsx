@@ -34,7 +34,8 @@ instance.interceptors.response.use(
       // authentication (token related issues)
       case 401: {
         toast.error("Unauthorized");
-        // window.location.href = "/login";
+        window.location.href = "/sign-in";
+        sessionStorage.removeItem("user");
         return Promise.reject(error);
       }
 

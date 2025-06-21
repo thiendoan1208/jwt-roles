@@ -2,14 +2,16 @@ import type { UserLogin } from "@/types/user";
 import { createContext, useState, type ReactElement } from "react";
 
 const UserContext = createContext({
-  user: {},
+  user: {
+    isAuthenticate: false,
+  },
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   loginContext: (userData: UserLogin) => {},
 });
 
 function UserProvider({ children }: { children: ReactElement }) {
-  const [user, setUser] = useState<UserLogin | object>({});
+  const [user, setUser] = useState({ isAuthenticate: false });
 
   const loginContext = (userData: UserLogin) => {
     setUser(userData);

@@ -14,21 +14,19 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Link, useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
+import { UserContext } from "@/Context/UserContext";
 
 const Navbar = () => {
+  const { user, loginContext } = useContext(UserContext);
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    isAuthenticate: false,
-    token: "",
-  });
 
   useEffect(() => {
     const data = sessionStorage.getItem("user");
     if (data) {
       const parseData = JSON.parse(data);
       if (parseData && parseData.isAuthenticate) {
-        setUser(parseData);
+        loginContext(parseData);
       }
     }
   }, []);
