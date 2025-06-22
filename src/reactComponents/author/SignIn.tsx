@@ -77,11 +77,12 @@ export default function SignIn() {
 
       if (data.data.EC === 1 || data.data.EC === -1) {
         toast.error(data.data.EM);
-         setLoading(false);
+        setLoading(false);
       } else {
         toast.success(data.data.EM);
         navigate("/users");
         handleSessionsStorage(data.data);
+        localStorage.setItem("token", data.data.data.access_token);
         setLoading(false);
       }
     } catch (error) {

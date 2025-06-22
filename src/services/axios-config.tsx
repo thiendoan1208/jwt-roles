@@ -6,6 +6,9 @@ const instance = axios.create({
 });
 
 instance.defaults.withCredentials = true;
+instance.defaults.headers.common[
+  "Authorization"
+] = `Bearer ${localStorage.getItem("token")}`;
 
 // Add a request interceptor
 instance.interceptors.request.use(
