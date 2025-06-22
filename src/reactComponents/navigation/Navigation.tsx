@@ -16,6 +16,7 @@ import {
 import { Link, useNavigate } from "react-router";
 import { useContext, useEffect } from "react";
 import { UserContext } from "@/Context/UserContext";
+import { logoutUser } from "@/services/user";
 
 const Navbar = () => {
   const { user, loginContext } = useContext(UserContext);
@@ -31,7 +32,8 @@ const Navbar = () => {
     }
   }, []);
 
-  const handleSignout = () => {
+  const handleSignout = async () => {
+    await logoutUser();
     sessionStorage.removeItem("user");
     user.isAuthenticate = false;
     navigate("/sign-in");

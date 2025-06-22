@@ -15,6 +15,10 @@ const signInUser = (signInForm: SignInForm) => {
   return axios.post("/api/users/sign-in", signInForm);
 };
 
+const logoutUser = () => {
+  return axios.post("/api/users/logout");
+};
+
 // CRUD User
 
 const getAllUsers = (
@@ -46,4 +50,5 @@ export {
   deleteUser,
   createNewUser,
   updateUser,
+  logoutUser,
 };
