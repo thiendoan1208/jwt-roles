@@ -57,8 +57,8 @@ const Navbar = () => {
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link to="/project" className={navigationMenuTriggerStyle()}>
-                    Project
+                  <Link to="/roles" className={navigationMenuTriggerStyle()}>
+                    Roles
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
@@ -104,8 +104,8 @@ const Navbar = () => {
                     <Link to="/users" className="font-medium">
                       Users
                     </Link>
-                    <Link to="/project" className="font-medium">
-                      Project
+                    <Link to="/roles" className="font-medium">
+                      Roles
                     </Link>
                     <Link
                       to="https://www.facebook.com/ddthien12"
