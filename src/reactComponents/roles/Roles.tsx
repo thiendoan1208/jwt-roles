@@ -1,10 +1,11 @@
 import { Input } from "@/components/ui/input";
 import { CirclePlus, Trash } from "lucide-react";
-import { useState, type ChangeEvent } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import _ from "lodash";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { createRoles } from "@/services/roles";
+import RoleTable from "@/reactComponents/roles-table/RoleTable";
 
 type ChildItem = {
   url: string;
@@ -15,7 +16,13 @@ type AllChildType = {
   [key: string]: ChildItem;
 };
 
+type ShareFunction = {
+  fetchRoleTable: () => void;
+};
+
 function Roles() {
+  const childRef = useRef<ShareFunction>(null);
+
   const [allChild, setAllChild] = useState<AllChildType>({
     child: { url: "", description: "" },
   });
@@ -65,6 +72,9 @@ function Roles() {
       if (data && data.data.EC === 0) {
         toast.success(data.data.EM);
       }
+      if (childRef.current !== null) {
+        childRef.current?.fetchRoleTable();
+      }
     } catch (error) {
       console.log(error);
       toast.error("Something went wrongs");
@@ -73,56 +83,61 @@ function Roles() {
 
   return (
     <div>
-      <h1 className="mt-2">Add one or many rows at one time</h1>
-      <div className="h-[1px] bg-gray-300 mt-2"></div>
-      <div className="mt-2">
-        {Object.entries(allChild).map(([key, value], index) => (
-          <div key={key} className="flex gap-2 items-center">
-            <div className="w-full">
-              <h1>URL</h1>
-              <Input
-                name="url"
-                onChange={(e) => handleChange(e, key)}
-                value={value.url}
-                type="text"
-                placeholder="ex: /read"
-              />
+      <div>
+        <h1 className="mt-2">Add one or many rows at one time</h1>
+        <div className="h-[1px] bg-gray-300 mt-2"></div>
+        <div className="mt-2">
+          {Object.entries(allChild).map(([key, value], index) => (
+            <div key={key} className="flex gap-2 items-center">
+              <div className="w-full">
+                <h1>URL</h1>
+                <Input
+                  name="url"
+                  onChange={(e) => handleChange(e, key)}
+                  value={value.url}
+                  type="text"
+                  placeholder="ex: /read"
+                />
+              </div>
+              <div className="w-full">
+                <h1>Description</h1>
+                <Input
+                  name="description"
+                  onChange={(e) => handleChange(e, key)}
+                  value={value.description}
+                  type="text"
+                  placeholder="ex: list all user"
+                />
+              </div>
+              <div className="flex items-center mt-4">
+                <CirclePlus
+                  className="cursor-pointer text-green-500 "
+                  onClick={() => {
+                    addNewRow(index);
+                  }}
+                />
+                <Trash
+                  className="cursor-pointer text-red-500"
+                  onClick={() => {
+                    deleteRow(key);
+                  }}
+                />
+              </div>
             </div>
-            <div className="w-full">
-              <h1>Description</h1>
-              <Input
-                name="description"
-                onChange={(e) => handleChange(e, key)}
-                value={value.description}
-                type="text"
-                placeholder="ex: list all user"
-              />
-            </div>
-            <div className="flex items-center mt-4">
-              <CirclePlus
-                className="cursor-pointer text-green-500 "
-                onClick={() => {
-                  addNewRow(index);
-                }}
-              />
-              <Trash
-                className="cursor-pointer text-red-500"
-                onClick={() => {
-                  deleteRow(key);
-                }}
-              />
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        <div className="mt-2">
+          <Button
+            onClick={() => {
+              handleSaveChild();
+            }}
+          >
+            Save
+          </Button>
+        </div>
       </div>
-      <div className="mt-2">
-        <Button
-          onClick={() => {
-            handleSaveChild();
-          }}
-        >
-          Save
-        </Button>
+      <div className="mt-4">
+        <RoleTable ref={childRef} />
       </div>
     </div>
   );
