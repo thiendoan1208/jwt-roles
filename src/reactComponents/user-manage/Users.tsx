@@ -40,6 +40,7 @@ function Users() {
   const getUserList = async (signal: AbortSignal) => {
     try {
       const data = await getAllUsers(currentPage, PAGE_LIMIT, signal);
+
       if (data && data.data.EC === 0) {
         setUserList(data.data.DT.rows);
         setTotalPage(Math.ceil(data.data.DT.totalPages));

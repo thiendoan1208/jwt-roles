@@ -38,7 +38,15 @@ function UpdateUser({
   userListFunc: (signal: AbortSignal) => Promise<void>;
 }) {
   const [groups, setGroups] = useState<Group[]>([]);
-  const [createUserForm, setCreateUserForm] = useState<UpdateUserForm>(user);
+  const [createUserForm, setCreateUserForm] = useState<UpdateUserForm>({
+    id: 0,
+    email: "",
+    username: "",
+    sex: "",
+    address: "",
+    phone: "",
+    groupID: 0,
+  });
 
   useEffect(() => {
     const getGroups = async () => {
@@ -79,7 +87,7 @@ function UpdateUser({
   const submitForm = async () => {
     try {
       const controller = new AbortController();
-      const data = await updateUser(createUserForm);
+      const data = await updateUser({ ...createUserForm, id: user.id });
 
       if (data.data.EC === 0) {
         toast.success("Update user success");

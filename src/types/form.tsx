@@ -24,6 +24,7 @@ type CreateUserForm = {
 };
 
 type UpdateUserForm = {
+  id: number;
   email: string;
   username: string;
   sex: string;
