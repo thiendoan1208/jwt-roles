@@ -63,6 +63,14 @@ const Navbar = () => {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <Link
+                    to="/group-roles"
+                    className={navigationMenuTriggerStyle()}
+                  >
+                    Group Roles
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link
                     to="https://www.facebook.com/ddthien12"
                     className={navigationMenuTriggerStyle()}
                   >
@@ -106,6 +114,9 @@ const Navbar = () => {
                     </Link>
                     <Link to="/roles" className="font-medium">
                       Roles
+                    </Link>
+                    <Link to="/group-roles" className="font-medium">
+                      Group Roles
                     </Link>
                     <Link
                       to="https://www.facebook.com/ddthien12"
