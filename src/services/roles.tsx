@@ -16,4 +16,16 @@ const getRolesByGroup = (groupID: string) => {
   return axios.get(`/api/role/group-roles/${groupID}`);
 };
 
-export { createRoles, getAllRoles, deleteRole, getRolesByGroup };
+const assignRoleToGroup = (
+  groupInfo: { groupID: number; roleID: number }[]
+) => {
+  return axios.post("/api/role/assign-role-group", groupInfo);
+};
+
+export {
+  createRoles,
+  getAllRoles,
+  deleteRole,
+  getRolesByGroup,
+  assignRoleToGroup,
+};

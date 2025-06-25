@@ -11,7 +11,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getAllGroup } from "@/services/group";
-import { getAllRoles, getRolesByGroup } from "@/services/roles";
+import {
+  assignRoleToGroup,
+  getAllRoles,
+  getRolesByGroup,
+} from "@/services/roles";
 import type { Group } from "@/types/group";
 import { cloneDeep } from "lodash";
 import { useEffect, useState } from "react";
@@ -19,6 +23,7 @@ import { toast } from "sonner";
 
 function GroupRoles() {
   const [groups, setGroups] = useState<Group[]>([]);
+  const [selectGroup, setSelectGroup] = useState("");
   const [roles, setRoles] = useState<
     { id: number; url: string; description: string }[]
   >([]);
@@ -83,6 +88,7 @@ function GroupRoles() {
 
   const onChangeGroup = async (value: string) => {
     if (value) {
+      setSelectGroup(value);
       await handleRolesByGroupID(value);
     }
   };
@@ -111,8 +117,39 @@ function GroupRoles() {
     setSelectRoles(cloneSelectRoles);
   };
 
-  const updateRoleForEachGroup = () => {
-    console.log(selectRoles);
+  const filterRoleForEachGroup = () => {
+    const assignGroupIdAndRoleID = selectRoles.map((role) => {
+      const obj: { groupID: number; roleID: number } = {
+        groupID: 0,
+        roleID: 0,
+      };
+      if (role.isCheck === true) {
+        obj.groupID = Number(selectGroup);
+        obj.roleID = role.id;
+        return obj;
+      } else {
+        return "none";
+      }
+    });
+
+    const filterResult = assignGroupIdAndRoleID.filter(
+      (item) => item !== "none"
+    );
+
+    return filterResult;
+  };
+
+  const updateRoleToGroup = async () => {
+    try {
+      const data = filterRoleForEachGroup();
+      const results = await assignRoleToGroup(data);
+      if (results) {
+        toast.success(results.data.EM);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
   };
 
   return (
@@ -150,7 +187,7 @@ function GroupRoles() {
         <div className="h-[0.5px] bg-gray-300 mt-2"></div>
       </div>
       <div className="mt-2">
-        <h1>Assign Roles:</h1>
+        {selectRoles && selectRoles.length > 0 && <h1>Assign Roles:</h1>}
         <div className="mt-2">
           {selectRoles &&
             selectRoles.length > 0 &&
@@ -172,16 +209,20 @@ function GroupRoles() {
             ))}
         </div>
       </div>
-      <div className="mt-">
-        <Button
-          onClick={() => {
-            updateRoleForEachGroup();
-          }}
-          className="bg-amber-500"
-        >
-          Save Change
-        </Button>
-      </div>
+      {selectRoles && selectRoles.length > 0 ? (
+        <div className="mt-2">
+          <Button
+            onClick={() => {
+              updateRoleToGroup();
+            }}
+            className="bg-amber-500"
+          >
+            Save Change
+          </Button>
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 }
